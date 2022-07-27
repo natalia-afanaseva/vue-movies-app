@@ -1,0 +1,73 @@
+:root {
+  --white: rgb(255, 255, 255);
+  --light-grey: rgb(162, 162, 165);
+  --yellow: rgb(248, 212, 85);
+  --red: rgb(201, 68, 61);
+  --dark-grey: rgb(31, 33, 40);
+  --black: rgb(0, 0, 0);
+}
+
+#app h1,
+#app h2,
+#app h3,
+#app h4,
+#app h5,
+#app h6 {
+  font-family: "Montserrat", sans-serif;
+  width: auto;
+}
+
+#app h1,
+#app h3 {
+  color: var(--white);
+}
+
+#app h6 {
+  color: var(--red);
+}
+
+#app p,
+#app span,
+#app button,
+#app a,
+#app div {
+  font-family: "Raleway", sans-serif;
+  color: var(--white);
+}
+
+#app button,
+a.button {
+  background-color: var(--red);
+  border-radius: 0.25rem;
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  width: auto;
+  text-decoration: none;
+}
+
+#app button:hover,
+#app button:active,
+#app button:focus,
+a.button:hover,
+a.button:active,
+a.button:focus {
+  text-decoration: underline;
+}
+
+/* COLORS */
+
+.red-text {
+  color: var(--red) !important;
+}
+
+.black-text {
+  color: var(--black) !important;
+}
+
+.light-grey-text {
+  color: var(--light-grey) !important;
+}
+
+.dark-grey-text {
+  color: var(--dark-grey) !important;
+}
