@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header :class="route.fullPath !== '/' ? 'dark-grey-bg' : ''">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <RouterLink class="navbar-brand" to="/"

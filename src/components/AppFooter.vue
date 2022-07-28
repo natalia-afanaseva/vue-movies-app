@@ -3,4 +3,10 @@
 </template>
 
 <script setup lang="ts"></script>
-<style scoped></style>
+
+<style scoped>
+footer {
+  background-color: var(--dark-grey);
+  color: var(--white);
+}
+</style>

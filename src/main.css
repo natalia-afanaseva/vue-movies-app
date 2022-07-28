@@ -71,3 +71,9 @@ a.button:focus {
 .dark-grey-text {
   color: var(--dark-grey) !important;
 }
+
+/* BACKGROUND */
+
+.dark-grey-bg {
+  background-color: var(--dark-grey) !important;
+}

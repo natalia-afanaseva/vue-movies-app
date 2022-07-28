@@ -7,36 +7,43 @@
   </div>
 
   <section class="row justify-content-center py-3">
-    <div class="col-12 col-lg-5">
-      <h6>Explore Top 250 Movies</h6>
-      <h3>Top 250 Movies</h3>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi ipsa
-        dignissimos libero molestias quasi expedita est voluptatum earum
-        adipisci, quis quas corrupti ab! At fugit numquam quisquam ad blanditiis
-        neque!
-      </p>
+    <div class="col-12 col-lg-10">
+      <div class="row justify-content-between align-items-center mb-3">
+        <h3>Top 250 TV shows</h3>
+        <RouterLink to="/movies#movies" class="button">See all</RouterLink>
+      </div>
+
+      <div class="row">
+        <MovieCard
+          v-for="show in top250TVShows"
+          :key="show.id"
+          :id="show.id"
+          :image="show.image"
+          :year="show.year"
+          :name="show.title"
+          :description="show.crew"
+        />
+      </div>
     </div>
-    <div class="col-12 col-lg-5">image</div>
   </section>
 
   <section class="row justify-content-center py-3">
     <div class="col-12 col-lg-10">
-      <div class="row justify-content-between align-items-center">
+      <div class="row justify-content-between align-items-center mb-3">
         <h3>Latest movies</h3>
-        <RouterLink to="/movies" class="button">See all</RouterLink>
+        <RouterLink to="/movies#shows" class="button">See all</RouterLink>
       </div>
 
       <div class="row">
-        <div class="col-12 col-md-6 col-lg-4 col-xl-3 main_movie-card">
-          <img src="../assets/seats.jpeg" />
-          <div>
-            <p class="light-grey-text fw-bold">
-              Name <span class="red-text">(90 min)</span>
-            </p>
-            <p class="mb-0 black-text">Description</p>
-          </div>
-        </div>
+        <MovieCard
+          v-for="movie in top250Movies"
+          :key="movie.id"
+          :id="movie.id"
+          :image="movie.image"
+          :year="movie.year"
+          :name="movie.title"
+          :description="movie.crew"
+        />
       </div>
     </div>
   </section>
@@ -45,6 +52,22 @@
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+import { getMovies, MoviesCriteria } from "@/service/api";
+import MovieCard from "@/components/MainPage/MovieCard.vue";
+import { ref, type Ref } from "vue";
+import type { Top250DataDetail } from "@/models/IMovie";
+
+const top250Movies: Ref<Top250DataDetail[]> = ref([]);
+const top250TVShows: Ref<Top250DataDetail[]> = ref([]);
+
+getMovies(MoviesCriteria.TOP_250_MOVIES).then((result) => {
+  top250Movies.value = result.slice(0, 4);
+});
+
+getMovies(MoviesCriteria.TOP_250_SHOWS).then((result) => {
+  top250TVShows.value = result.slice(0, 4);
+});
+
 /*
 { title: "Top-250 Movies", link: "Top250Movies" },
         { title: "Most popular movies", link: "MostPopularMovies" },
@@ -88,22 +111,5 @@ div.main_main-movie__wrapper {
   position: absolute;
   top: 30vh;
   left: 10%;
-}
-
-.main_movie-card {
-  height: 25rem;
-}
-
-.main_movie-card img {
-  width: 100%;
-  height: 75%;
-  object-fit: cover;
-}
-
-.main_movie-card div {
-  background-color: #f9fbfd;
-  border: 1px solid #eee;
-  border-top: 0;
-  padding: 0.25rem;
 }
 </style>
