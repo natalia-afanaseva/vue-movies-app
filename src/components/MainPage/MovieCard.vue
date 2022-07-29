@@ -3,12 +3,16 @@
     :to="`/movies/${props.id}`"
     class="col-12 col-md-6 col-lg-4 col-xl-3 main_movie-card"
   >
-    <img :src="props.image" :alt="props.name" />
+    <img :src="props.image" :alt="props.name" v-if="props.image" />
+    <img src="../../assets/no-image.jpeg" alt="No image provided" v-else />
     <div>
-      <p class="light-grey-text fw-bold">
-        {{ props.name }} <span class="red-text">({{ props.year }})</span>
+      <p class="light-grey-text fw-bold ellipsis" :title="props.name">
+        {{ props.name }}
+        <span class="red-text" v-if="!!props.year">({{ props.year }})</span>
       </p>
-      <p class="mb-0 black-text">{{ props.description }}</p>
+      <p class="mb-0 black-text ellipsis" :title="props.description">
+        {{ props.description }}
+      </p>
     </div>
   </RouterLink>
 </template>

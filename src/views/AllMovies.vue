@@ -16,22 +16,20 @@
 </template>
 
 <script setup lang="ts">
-import { getMovies, MoviesCriteria } from "@/service/api";
+import { getItems, RequestsCriteria } from "@/service/api";
 import { useRoute } from "vue-router";
 import { ref, type Ref } from "vue";
-import type { Top250DataDetail } from "@/models/IMovie";
+import type { ITop250 } from "@/models/ITop250";
 import MovieCard from "../components/MainPage/MovieCard.vue";
 
 const { hash } = useRoute();
-const items: Ref<Top250DataDetail[]> = ref([]);
+const items: Ref<ITop250[]> = ref([]);
 
-getMovies(
+getItems(
   hash === "movies"
-    ? MoviesCriteria.TOP_250_MOVIES
-    : MoviesCriteria.TOP_250_SHOWS
+    ? RequestsCriteria.TOP_250_MOVIES
+    : RequestsCriteria.TOP_250_SHOWS
 ).then((result) => {
   items.value = result.items;
 });
 </script>
-
-<style scoped></style>

@@ -16,5 +16,13 @@ import AppFooter from "./components/AppFooter.vue";
 /*
 font-family: 'Montserrat', sans-serif;
 font-family: 'Raleway', sans-serif;
+
+TODO:
+- search bar;
+- add to fav;
+- auth?
+- loader
+- error
+- responsiveness
 */
 </style>

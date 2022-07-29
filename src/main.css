@@ -77,3 +77,13 @@ a.button:focus {
 .dark-grey-bg {
   background-color: var(--dark-grey) !important;
 }
+
+/* TEXT */
+
+.ellipsis {
+  text-overflow: ellipsis;
+
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
+}

@@ -1,86 +1,60 @@
 <template>
-  <section class="row"></section>
-  <div class="main_main-movie__wrapper">
-    <h1>Name</h1>
-    <p>Casr and description</p>
-    <button>Add to fav</button>
-  </div>
+  <article class="main">
+    <MainPageHero
+      :name="heroMovie.title"
+      :cast="heroMovie.crew"
+      :image="heroMovie.image"
+    />
 
-  <section class="row justify-content-center py-3">
-    <div class="col-12 col-lg-10">
-      <div class="row justify-content-between align-items-center mb-3">
-        <h3>Top 250 TV shows</h3>
-        <RouterLink to="/movies#movies" class="button">See all</RouterLink>
-      </div>
+    <MainPageSection
+      :items="top250Movies"
+      :title="'Top 250 TV movies'"
+      :link="'/movies#movies'"
+    />
 
-      <div class="row">
-        <MovieCard
-          v-for="show in top250TVShows"
-          :key="show.id"
-          :id="show.id"
-          :image="show.image"
-          :year="show.year"
-          :name="show.title"
-          :description="show.crew"
-        />
-      </div>
-    </div>
-  </section>
+    <MainPageSection
+      :items="top250TVShows"
+      :title="'Top 250 TV shows'"
+      :link="'/movies#shows'"
+    />
 
-  <section class="row justify-content-center py-3">
-    <div class="col-12 col-lg-10">
-      <div class="row justify-content-between align-items-center mb-3">
-        <h3>Latest movies</h3>
-        <RouterLink to="/movies#shows" class="button">See all</RouterLink>
-      </div>
-
-      <div class="row">
-        <MovieCard
-          v-for="movie in top250Movies"
-          :key="movie.id"
-          :id="movie.id"
-          :image="movie.image"
-          :year="movie.year"
-          :name="movie.title"
-          :description="movie.crew"
-        />
-      </div>
-    </div>
-  </section>
-  <section class="row justify-content-center py-3">coming soon</section>
+    <section class="row justify-content-center py-3">coming soon</section>
+  </article>
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
-import { getMovies, MoviesCriteria } from "@/service/api";
-import MovieCard from "@/components/MainPage/MovieCard.vue";
+import { getItems, RequestsCriteria } from "@/service/api";
 import { ref, type Ref } from "vue";
-import type { Top250DataDetail } from "@/models/IMovie";
+import type { ITop250 } from "@/models/ITop250";
+import MainPageHero from "../components/MainPage/MainPageHero.vue";
+import MainPageSection from "@/components/MainPage/MainPageSection.vue";
 
-const top250Movies: Ref<Top250DataDetail[]> = ref([]);
-const top250TVShows: Ref<Top250DataDetail[]> = ref([]);
-
-getMovies(MoviesCriteria.TOP_250_MOVIES).then((result) => {
-  top250Movies.value = result.slice(0, 4);
+const top250Movies: Ref<ITop250[]> = ref([]);
+const top250TVShows: Ref<ITop250[]> = ref([]);
+const heroMovie: Ref<ITop250> = ref({
+  id: "",
+  image: "",
+  rank: "",
+  title: "",
+  fullTitle: "",
+  year: "",
+  crew: "",
 });
 
-getMovies(MoviesCriteria.TOP_250_SHOWS).then((result) => {
-  top250TVShows.value = result.slice(0, 4);
+getItems(RequestsCriteria.TOP_250_MOVIES).then((result) => {
+  heroMovie.value = result.items[0];
+  top250Movies.value = result.items.slice(1, 5);
 });
 
-/*
-{ title: "Top-250 Movies", link: "Top250Movies" },
-        { title: "Most popular movies", link: "MostPopularMovies" },
-        { title: "In theatres", link: "InTheatres" },
-        { title: "Coming soon", link: "ComingSoon" },
-*/
+getItems(RequestsCriteria.TOP_250_SHOWS).then((result) => {
+  top250TVShows.value = result.items.slice(0, 4);
+});
 </script>
 
-<style scoped>
-section:first-of-type {
+<style>
+article.main section:first-of-type {
   position: relative;
   height: 70vh;
-  background: url("../assets/seats.jpeg");
   background-size: cover;
   position: relative;
   width: 100vw;
@@ -89,7 +63,7 @@ section:first-of-type {
   z-index: -1;
 }
 
-section:first-of-type::before {
+article.main section:first-of-type::before {
   content: "";
   position: absolute;
   top: 0;
@@ -99,11 +73,11 @@ section:first-of-type::before {
   background-image: linear-gradient(to top, var(--dark-grey), transparent);
 }
 
-section:nth-of-type(even) {
+article.main section:nth-of-type(even) {
   background-color: var(--dark-grey);
 }
 
-section:nth-of-type(3) h3 {
+article.main section:nth-of-type(3) h3 {
   color: var(--black) !important;
 }
 

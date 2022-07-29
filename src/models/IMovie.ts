@@ -1,13 +1,3 @@
-export interface Top250DataDetail {
-  id: string;
-  rank: string;
-  title: string;
-  fullTitle: string;
-  year: string;
-  image: string;
-  crew: string;
-}
-
 export interface StarList {
   id: string;
   name: string;
