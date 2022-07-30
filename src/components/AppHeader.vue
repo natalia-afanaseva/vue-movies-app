@@ -17,10 +17,12 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 justify-content-end">
+          <ul
+            class="navbar-nav me-auto mb-2 mb-lg-0 w-100 justify-content-end align-items-baseline"
+          >
             <li
               class="nav-item"
-              v-for="navLink in navLinks"
+              v-for="navLink in navLinks[isAuth ? 'isAuth' : 'notIsAuth']"
               :key="navLink.name"
             >
               <RouterLink
@@ -28,30 +30,14 @@
                 class="nav-link"
                 :class="navLink.link === route.path ? 'active' : ''"
               >
-                {{ navLink.name }}
+                <HomeSvg v-if="navLink.name === 'Movies'" />
+                <UserSvg v-if="navLink.name === 'Profile'" />
               </RouterLink>
             </li>
-
-            <!-- <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dropdown
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </li>
-              </ul>
-            </li> -->
+            <button data-login="true" @click="handleAuth" class="me-2">
+              <LogoutSvg v-if="isAuth" />
+              <LoginSvg v-else />
+            </button>
           </ul>
           <AppHeaderSearchBar />
         </div>
@@ -62,10 +48,25 @@
 
 <script setup lang="ts">
 import { RouterLink, useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+import { useStore } from "@/store/auth";
 import { navLinks } from "../utils/constants";
 import AppHeaderSearchBar from "./AppHeader/AppHeaderSearchBar.vue";
 
+import LoginSvg from "../assets/icons/LoginSvg.vue";
+import LogoutSvg from "../assets/icons/LogoutSvg.vue";
+import HomeSvg from "../assets/icons/HomeSvg.vue";
+import UserSvg from "../assets/icons/UserSvg.vue";
+
 const route = useRoute();
+const store = useStore();
+
+const { isAuth } = storeToRefs(store);
+const { setAuth } = store;
+
+function handleAuth() {
+  setAuth();
+}
 </script>
 
 <style scoped>

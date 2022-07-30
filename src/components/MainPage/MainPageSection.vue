@@ -2,7 +2,7 @@
   <section class="row justify-content-center py-3">
     <div class="col-12 col-lg-10">
       <div class="row justify-content-between align-items-center mb-3">
-        <h3>Top 250 TV shows {{ props.title }}</h3>
+        <h3>{{ props.title }}</h3>
         <RouterLink :to="props.link" class="button">See all</RouterLink>
       </div>
 

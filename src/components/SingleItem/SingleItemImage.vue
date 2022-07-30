@@ -5,8 +5,17 @@
 </template>
 
 <script setup lang="ts">
-import type { IMovie } from "@/models/IMovie";
 import { defineProps } from "vue";
 
-const props = defineProps<Pick<IMovie, "image" | "title">>();
+const props = defineProps({
+  image: String,
+  title: String,
+});
 </script>
+
+<style scoped>
+img {
+  max-height: 70vh;
+  object-fit: contain;
+}
+</style>

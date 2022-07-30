@@ -10,6 +10,8 @@ export enum RequestsCriteria {
   COMING_SOON = "ComingSoon",
   TITLE = "Title",
   NAME = "Name",
+  SEARCH_MOVIES = "SearchMovie",
+  SEARCH_SHOWS = "SearchSeries",
 }
 
 export const getItems = async (
@@ -21,6 +23,30 @@ export const getItems = async (
       `https://imdb-api.com/en/API/${criteria}/${apiKey}/${additionalParams}`
     );
     return result.data;
+  } catch (error: any) {
+    return error.message;
+  }
+};
+
+export interface SearchResult {
+  id: string;
+  resultType: string;
+  image: string;
+  title: string;
+  description: string;
+}
+
+export const searchItems = async (query: string) => {
+  try {
+    let result = [] as SearchResult[];
+
+    const movies = await getItems(RequestsCriteria.SEARCH_MOVIES);
+    const shows = await getItems(RequestsCriteria.SEARCH_SHOWS);
+
+    result.push(movies);
+    result.push(shows);
+
+    return result;
   } catch (error: any) {
     return error.message;
   }

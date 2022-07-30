@@ -69,10 +69,12 @@ section:first-of-type {
   background-attachment: fixed;
   background-size: cover;
   background-blend-mode: overlay;
+  text-align: center;
+  background-position-y: 50%;
 }
 
-img {
-  width: 100%;
+section:first-of-type img {
+  /* width: 100%; */
   max-height: 70vh;
   object-fit: contain;
 }

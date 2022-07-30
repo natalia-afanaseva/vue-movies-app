@@ -1,9 +1,11 @@
 <template>
-  <section class="row"></section>
-  <div class="main_main-movie__wrapper" :style="style">
+  <section class="row" :style="style"></section>
+  <div class="main_main-movie__wrapper">
     <h1>{{ props.name }}</h1>
     <p>{{ props.cast }}</p>
-    <button>Add to fav</button>
+    <RouterLink :to="`/movies/${props.id}`" class="button"
+      >Learn more</RouterLink
+    >
   </div>
 </template>
 
@@ -14,7 +16,15 @@ const props = defineProps({
   name: String,
   cast: String,
   image: String,
+  id: String,
 });
 
-const style = ref({ background: `url(${props.image})` });
+const style = ref({ backgroundImage: `url(${props.image})` });
 </script>
+
+<style scoped>
+section {
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+</style>

@@ -9,6 +9,7 @@
 <style scoped>
 footer {
   background-color: var(--white);
+  border-top: 0.5px solid var(--dark-grey);
 }
 
 footer p {

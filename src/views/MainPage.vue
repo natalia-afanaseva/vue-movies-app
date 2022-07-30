@@ -4,6 +4,7 @@
       :name="heroMovie.title"
       :cast="heroMovie.crew"
       :image="heroMovie.image"
+      :id="heroMovie.id"
     />
 
     <MainPageSection
@@ -17,8 +18,6 @@
       :title="'Top 250 TV shows'"
       :link="'/movies#shows'"
     />
-
-    <section class="row justify-content-center py-3">coming soon</section>
   </article>
 </template>
 
@@ -28,6 +27,7 @@ import { ref, type Ref } from "vue";
 import type { ITop250 } from "@/models/ITop250";
 import MainPageHero from "../components/MainPage/MainPageHero.vue";
 import MainPageSection from "@/components/MainPage/MainPageSection.vue";
+import { generateRandom } from "@/utils/getRandom";
 
 const top250Movies: Ref<ITop250[]> = ref([]);
 const top250TVShows: Ref<ITop250[]> = ref([]);
@@ -41,9 +41,11 @@ const heroMovie: Ref<ITop250> = ref({
   crew: "",
 });
 
+const randomIndex = generateRandom(250);
+
 getItems(RequestsCriteria.TOP_250_MOVIES).then((result) => {
-  heroMovie.value = result.items[0];
-  top250Movies.value = result.items.slice(1, 5);
+  heroMovie.value = result.items[randomIndex];
+  top250Movies.value = result.items.slice(0, 4);
 });
 
 getItems(RequestsCriteria.TOP_250_SHOWS).then((result) => {
