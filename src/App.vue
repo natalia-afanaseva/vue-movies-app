@@ -18,10 +18,6 @@ font-family: 'Montserrat', sans-serif;
 font-family: 'Raleway', sans-serif;
 
 TODO:
-- search bar;
-- loader
-- error
 - responsiveness
-- not found
 */
 </style>

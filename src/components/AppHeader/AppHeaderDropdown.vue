@@ -1,5 +1,5 @@
 <template>
-  <ul class="list-group" v-if="props.items.length > 0">
+  <ul class="list-group" v-if="props.items.length > 0 && !isLoading">
     <li class="list-group-item" v-for="item in props.items" :key="item.id">
       <RouterLink :to="`/movies/${item.id}`">{{ item.title }}</RouterLink>
     </li>
@@ -11,6 +11,11 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/store/auth";
+
+const store = useAuthStore();
+const { isLoading } = storeToRefs(store);
 
 const props = defineProps<{ items: { title: string; id: string }[] }>();
 </script>
@@ -21,5 +26,14 @@ ul {
   top: 2.25rem;
   width: 75%;
   left: -1%;
+}
+
+ul li a {
+  text-decoration: none;
+  color: var(--dark-grey);
+}
+
+ul li a:hover {
+  text-decoration: underline;
 }
 </style>

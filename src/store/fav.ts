@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
-export const useStore = defineStore("fav", {
-  state: () => ({ _favoriteMovies: ["tt1375666"] as string[] }),
+export const useFavStore = defineStore("fav", {
+  state: () => ({ _favoriteMovies: [] as string[] }),
   getters: {
     favoriteMovies: (state) => state._favoriteMovies,
     isMovieInFavourites: (state) => {

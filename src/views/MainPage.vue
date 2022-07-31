@@ -1,5 +1,5 @@
 <template>
-  <article class="main">
+  <article class="main" v-if="isLoading">
     <MainPageHero
       :name="heroMovie.title"
       :cast="heroMovie.crew"
@@ -19,15 +19,23 @@
       :link="'/movies#shows'"
     />
   </article>
+  <base-loader v-else></base-loader>
 </template>
 
 <script setup lang="ts">
-import { getItems, RequestsCriteria } from "@/service/api";
+import { getItems } from "@/service/api";
 import { ref, type Ref } from "vue";
 import type { ITop250 } from "@/models/ITop250";
 import MainPageHero from "../components/MainPage/MainPageHero.vue";
 import MainPageSection from "@/components/MainPage/MainPageSection.vue";
 import { generateRandom } from "@/utils/getRandom";
+import { RequestsCriteria } from "@/models/ERequestsCriteria";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/store/auth";
+
+const store = useAuthStore();
+const { isLoading } = storeToRefs(store);
+const { setLoading } = store;
 
 const top250Movies: Ref<ITop250[]> = ref([]);
 const top250TVShows: Ref<ITop250[]> = ref([]);
@@ -43,14 +51,21 @@ const heroMovie: Ref<ITop250> = ref({
 
 const randomIndex = generateRandom(250);
 
-getItems(RequestsCriteria.TOP_250_MOVIES).then((result) => {
-  heroMovie.value = result.items[randomIndex];
-  top250Movies.value = result.items.slice(0, 4);
-});
+try {
+  setLoading(true);
+  getItems(RequestsCriteria.TOP_250_MOVIES).then((result) => {
+    heroMovie.value = result.items[randomIndex];
+    top250Movies.value = result.items.slice(0, 4);
+  });
 
-getItems(RequestsCriteria.TOP_250_SHOWS).then((result) => {
-  top250TVShows.value = result.items.slice(0, 4);
-});
+  getItems(RequestsCriteria.TOP_250_SHOWS).then((result) => {
+    top250TVShows.value = result.items.slice(0, 4);
+  });
+} catch (error) {
+  window.alert(error);
+} finally {
+  setLoading(false);
+}
 </script>
 
 <style>

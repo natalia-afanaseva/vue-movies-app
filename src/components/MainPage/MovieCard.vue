@@ -24,8 +24,8 @@
 import { defineProps } from "vue";
 import { RouterLink } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useStore as useAuthStore } from "@/store/auth";
-import { useStore as useFavStore } from "@/store/fav";
+import { useAuthStore } from "@/store/auth";
+import { useFavStore } from "@/store/fav";
 import LikeSvg from "../../assets/icons/ThumbUpSvg.vue";
 import DislikeSvg from "../../assets/icons/ThumbDownSvg.vue";
 

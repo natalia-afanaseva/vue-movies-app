@@ -1,12 +1,8 @@
 <template>
-  <div class="lds-dual-ring" v-show="props.isLoading" />
+  <div class="lds-dual-ring" />
 </template>
 
-<script setup lang="ts">
-import { defineProps } from "vue";
-
-const props = defineProps(["isLoading"]);
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .lds-dual-ring {

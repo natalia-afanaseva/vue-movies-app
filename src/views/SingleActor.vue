@@ -1,5 +1,5 @@
 <template>
-  <article class="row">
+  <article class="row" v-if="isLoading">
     <SingleItemImage
       :image="(actor?.image as string)"
       :title="(actor?.name as string)"
@@ -27,24 +27,39 @@
       </div>
     </section>
   </article>
+  <base-loader v-else></base-loader>
 </template>
 
 <script setup lang="ts">
 import SingleItemImage from "../components/SingleItem/SingleItemImage.vue";
 import { useRoute } from "vue-router";
-import { getItems, RequestsCriteria } from "@/service/api";
+import { getItems } from "@/service/api";
 import { ref, type Ref } from "vue";
 import type { IActor } from "@/models/IActor";
 import MovieCard from "@/components/MainPage/MovieCard.vue";
+import { RequestsCriteria } from "@/models/ERequestsCriteria";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/store/auth";
 
 const route = useRoute();
 const { id } = route.params;
 
+const store = useAuthStore();
+const { isLoading } = storeToRefs(store);
+const { setLoading } = store;
+
 const actor: Ref<IActor | null> = ref(null);
 
-getItems(RequestsCriteria.NAME, id as string).then((result) => {
-  actor.value = result;
-});
+try {
+  setLoading(true);
+  getItems(RequestsCriteria.NAME, id as string).then((result) => {
+    actor.value = result;
+  });
+} catch (error) {
+  window.alert(error);
+} finally {
+  setLoading(false);
+}
 </script>
 
 <style scoped>

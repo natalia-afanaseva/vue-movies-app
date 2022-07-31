@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { RouterLink, useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
-import { useStore } from "@/store/auth";
+import { useAuthStore } from "@/store/auth";
 import { navLinks } from "../utils/constants";
 import AppHeaderSearchBar from "./AppHeader/AppHeaderSearchBar.vue";
 
@@ -59,7 +59,7 @@ import HomeSvg from "../assets/icons/HomeSvg.vue";
 import UserSvg from "../assets/icons/UserSvg.vue";
 
 const route = useRoute();
-const store = useStore();
+const store = useAuthStore();
 
 const { isAuth } = storeToRefs(store);
 const { setAuth } = store;

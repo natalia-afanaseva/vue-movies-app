@@ -1,18 +1,8 @@
+import { RequestsCriteria } from "@/models/ERequestsCriteria";
+import type { SearchResult } from "@/models/ISearchResults";
 import axios from "axios";
 
 const apiKey = "k_lhxgvv05";
-
-export enum RequestsCriteria {
-  TOP_250_MOVIES = "Top250Movies",
-  TOP_250_SHOWS = "Top250TVs",
-  MOST_POPULAR = "MostPopularMovies",
-  IN_THEATRES = "InTheatres",
-  COMING_SOON = "ComingSoon",
-  TITLE = "Title",
-  NAME = "Name",
-  SEARCH_MOVIES = "SearchMovie",
-  SEARCH_SHOWS = "SearchSeries",
-}
 
 export const getItems = async (
   criteria: RequestsCriteria,
@@ -24,30 +14,34 @@ export const getItems = async (
     );
     return result.data;
   } catch (error: any) {
-    return error.message;
+    throw new Error(error.message);
   }
 };
-
-export interface SearchResult {
-  id: string;
-  resultType: string;
-  image: string;
-  title: string;
-  description: string;
-}
 
 export const searchItems = async (query: string) => {
   try {
     let result = [] as SearchResult[];
 
-    const movies = await getItems(RequestsCriteria.SEARCH_MOVIES);
-    const shows = await getItems(RequestsCriteria.SEARCH_SHOWS);
+    const movies: { results: SearchResult[]; errorMessage: string } =
+      await getItems(RequestsCriteria.SEARCH_MOVIES, query);
+    if (movies.errorMessage) {
+      throw new Error(movies.errorMessage);
+    }
+    if (movies.results && movies.results.length > 0) {
+      result.concat(movies.results);
+    }
 
-    result.push(movies);
-    result.push(shows);
+    const shows: { results: SearchResult[]; errorMessage: string } =
+      await getItems(RequestsCriteria.SEARCH_SHOWS, query);
+    if (shows.errorMessage) {
+      throw new Error(shows.errorMessage);
+    }
+    if (shows.results && shows.results.length > 0) {
+      result.concat(shows.results);
+    }
 
     return result;
   } catch (error: any) {
-    return error.message;
+    throw new Error(error.message);
   }
 };
