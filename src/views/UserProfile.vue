@@ -1,7 +1,7 @@
 <template>
-  <article v-if="isLoading">
+  <article v-if="!isLoading">
     <h1>Your favorites</h1>
-    <section class="row">
+    <section class="row" v-if="userFav.length > 0">
       <MovieCard
         v-for="m in userFav"
         :key="m.id"
@@ -10,6 +10,7 @@
         :name="m.title"
       />
     </section>
+    <h3 class="text-red" v-else>You don't have favorite movies yet.</h3>
   </article>
   <base-loader v-else></base-loader>
 </template>

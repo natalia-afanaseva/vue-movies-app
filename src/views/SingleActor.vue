@@ -1,5 +1,5 @@
 <template>
-  <article class="row" v-if="isLoading">
+  <article class="row" v-if="!isLoading">
     <SingleItemImage
       :image="(actor?.image as string)"
       :title="(actor?.name as string)"
@@ -7,15 +7,17 @@
 
     <section class="mt-3">
       <h1>{{ actor?.name }}</h1>
-      <p class="light-grey-text fs-6">
-        {{ actor?.birthDate }}
-        <span v-if="actor?.deathDate"> - {{ actor?.deathDate }}</span>
+      <p class="fs-6">
+        {{ getModifiedDate(actor?.birthDate) }}
+        <span v-if="actor?.deathDate">
+          - {{ getModifiedDate(actor?.deathDate) }}</span
+        >
       </p>
       <p class="light-grey-text">Awards: {{ actor?.awards }}</p>
     </section>
 
     <section>
-      <h3>Known for:</h3>
+      <h3 class="my-3">Known for:</h3>
       <div class="row">
         <MovieCard
           v-for="m in actor?.knownFor"
@@ -40,6 +42,7 @@ import MovieCard from "@/components/MainPage/MovieCard.vue";
 import { RequestsCriteria } from "@/models/ERequestsCriteria";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
+import { getModifiedDate } from "@/utils/getModifiedDate";
 
 const route = useRoute();
 const { id } = route.params;
@@ -92,5 +95,6 @@ section:first-of-type img {
   /* width: 100%; */
   max-height: 70vh;
   object-fit: contain;
+  max-width: 90vw;
 }
 </style>

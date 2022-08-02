@@ -1,5 +1,5 @@
 <template>
-  <article class="main" v-if="isLoading">
+  <article class="main" v-if="!isLoading">
     <MainPageHero
       :name="heroMovie.title"
       :cast="heroMovie.crew"
@@ -53,14 +53,23 @@ const randomIndex = generateRandom(250);
 
 try {
   setLoading(true);
-  getItems(RequestsCriteria.TOP_250_MOVIES).then((result) => {
-    heroMovie.value = result.items[randomIndex];
-    top250Movies.value = result.items.slice(0, 4);
-  });
 
-  getItems(RequestsCriteria.TOP_250_SHOWS).then((result) => {
-    top250TVShows.value = result.items.slice(0, 4);
-  });
+  const cache = localStorage.getItem("movies");
+  const parsed = JSON.parse(cache ?? "");
+
+  heroMovie.value = parsed[randomIndex];
+  top250Movies.value = parsed.slice(0, 4);
+
+  top250TVShows.value = parsed.slice(5, 8);
+
+  // getItems(RequestsCriteria.TOP_250_MOVIES).then((result) => {
+  //   heroMovie.value = result.items[randomIndex];
+  //   top250Movies.value = result.items.slice(0, 4);
+  // });
+
+  // getItems(RequestsCriteria.TOP_250_SHOWS).then((result) => {
+  //   top250TVShows.value = result.items.slice(0, 4);
+  // });
 } catch (error) {
   window.alert(error);
 } finally {

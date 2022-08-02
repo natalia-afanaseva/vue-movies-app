@@ -1,5 +1,5 @@
 <template>
-  <article class="row" v-if="isLoading">
+  <article class="row" v-if="!isLoading">
     <SingleItemImage
       :image="(movie?.image as string)"
       :title="(movie?.title as string)"
@@ -9,29 +9,36 @@
       <h1>{{ movie?.title }}</h1>
       <p class="light-grey-text fs-6">
         {{ movie?.imDbRating }}
-        <span class="red-text fw-bold">{{ movie?.runtimeMins }}</span>
-      </p>
-      <p class="light-grey-text">Release date: {{ movie?.releaseDate }}</p>
-      <p class="fw-bold">
-        Directors: <span class="red-text">{{ movie?.stars }}</span>
+        <span class="red-text fw-bold">{{ movie?.runtimeMins }} min.</span>
       </p>
       <p class="light-grey-text">
-        Genre: <span>{{ movie?.genres }}</span>
+        Release date: {{ getModifiedDate(movie?.releaseDate) }}
+      </p>
+      <p>
+        <span class="fw-bold">Directors: </span>
+        <span class="red-text">{{ movie?.stars }}</span>
+      </p>
+      <p class="light-grey-text">
+        <span class="fw-bold">Genre: </span> <span>{{ movie?.genres }}</span>
       </p>
       <div>
-        Cast:
+        <span class="fw-bold">Cast:</span>
+
         <ul>
-          <li v-for="actor in movie?.actorList" :key="actor.id">
-            <RouterLink :to="`/actors/${actor.id}`">{{
-              actor.name
-            }}</RouterLink>
+          <li v-for="(actor, index) in movie?.actorList" :key="actor.id">
+            <RouterLink :to="`/actors/${actor.id}`"
+              >{{ actor.name }}
+              {{
+                index < (movie?.actorList?.length ?? 1) - 1 ? ", " : ""
+              }}</RouterLink
+            >
           </li>
         </ul>
       </div>
     </section>
 
     <section>
-      <h3>More like this</h3>
+      <h3 class="my-3">More like this</h3>
       <div class="row">
         <MovieCard
           v-for="m in movie?.similars"
@@ -56,6 +63,7 @@ import SingleItemImage from "../components/SingleItem/SingleItemImage.vue";
 import { RequestsCriteria } from "@/models/ERequestsCriteria";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
+import { getModifiedDate } from "@/utils/getModifiedDate";
 
 const store = useAuthStore();
 const { isLoading } = storeToRefs(store);
@@ -91,7 +99,8 @@ section:nth-of-type(even) h1,
 section:nth-of-type(even) div,
 section:nth-of-type(even) ul li a,
 section:nth-of-type(even) p:not(.light-grey-text),
-p span {
+p span,
+span {
   color: var(--dark-grey) !important;
 }
 
@@ -108,5 +117,15 @@ section:first-of-type img {
   /*width: 100%;*/
   max-height: 70vh;
   object-fit: contain;
+  max-width: 90vw;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  display: inline-block;
 }
 </style>
