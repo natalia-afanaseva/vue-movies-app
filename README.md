@@ -1,46 +1,36 @@
-# vue-movies-app
+# Vue Movies App
 
-This template should help get you started developing with Vue 3 in Vite.
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Recommended IDE Setup](#recommended-ide-setup)
+* [Launch](#launch)
+
+## General info
+
+An app for searching for movies and actors with mock authorisation and a possibility to add to favourites. You can visit the website ... to check how it works.
+
+## Technologies
+
+- Vue version: 18;
+- TypeScript version: 4;
+- Vue Router version: 4;
+- Pinia version 2;
+- Axios.
 
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Type Support for `.vue` Imports in TS
+## Launch
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+To run this project, install it locally using npm:
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+```
+$ cd vue-movies-app
+$ npm install
+$ npm run dev
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
