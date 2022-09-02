@@ -19,8 +19,6 @@ const props = defineProps({
   id: String,
 });
 
-console.log(props);
-
 const style = ref({ backgroundImage: `url(${props.image})` });
 </script>
 

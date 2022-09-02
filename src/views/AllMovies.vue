@@ -1,5 +1,5 @@
 <template>
-  <article v-if="isLoading">
+  <article v-if="!isLoading">
     <h1>Top 250 {{ hash }}</h1>
     <section class="row">
       <MovieCard

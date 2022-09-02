@@ -8,8 +8,10 @@
     <section class="mt-3">
       <h1>{{ movie?.title }}</h1>
       <p class="light-grey-text fs-6">
-        {{ movie?.imDbRating }}
-        <span class="red-text fw-bold">{{ movie?.runtimeMins }} min.</span>
+        {{ movie?.imDbRating }} &#10025;
+        <span class="red-text fw-bold" v-if="movie?.runtimeMins"
+          >/ {{ movie?.runtimeMins }} min.</span
+        >
       </p>
       <p class="light-grey-text">
         Release date: {{ getModifiedDate(movie?.releaseDate) }}
@@ -56,7 +58,7 @@
 <script setup lang="ts">
 import { useRoute, RouterLink } from "vue-router";
 import { getItems } from "@/service/api";
-import { ref, type Ref } from "vue";
+import { ref, type Ref, onUpdated } from "vue";
 import type { IMovie } from "@/models/IMovie";
 import MovieCard from "@/components/MainPage/MovieCard.vue";
 import SingleItemImage from "../components/SingleItem/SingleItemImage.vue";
@@ -74,16 +76,15 @@ const { id } = route.params;
 
 const movie: Ref<IMovie | null> = ref(null);
 
-try {
+onUpdated(() => {
   setLoading(true);
-  getItems(RequestsCriteria.TITLE, id as string).then((result) => {
-    movie.value = result;
-  });
-} catch (error) {
-  window.alert(error);
-} finally {
-  setLoading(false);
-}
+  getItems(RequestsCriteria.TITLE, id as string)
+    .then((result) => {
+      movie.value = result;
+    })
+    .catch((error) => window.alert(error))
+    .finally(() => setLoading(false));
+});
 </script>
 
 <style scoped>
@@ -114,7 +115,6 @@ section:first-of-type {
 }
 
 section:first-of-type img {
-  /*width: 100%;*/
   max-height: 70vh;
   object-fit: contain;
   max-width: 90vw;

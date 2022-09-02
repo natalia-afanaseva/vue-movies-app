@@ -36,7 +36,7 @@
 import SingleItemImage from "../components/SingleItem/SingleItemImage.vue";
 import { useRoute } from "vue-router";
 import { getItems } from "@/service/api";
-import { ref, type Ref } from "vue";
+import { ref, type Ref, onUpdated } from "vue";
 import type { IActor } from "@/models/IActor";
 import MovieCard from "@/components/MainPage/MovieCard.vue";
 import { RequestsCriteria } from "@/models/ERequestsCriteria";
@@ -53,16 +53,15 @@ const { setLoading } = store;
 
 const actor: Ref<IActor | null> = ref(null);
 
-try {
+onUpdated(() => {
   setLoading(true);
-  getItems(RequestsCriteria.NAME, id as string).then((result) => {
-    actor.value = result;
-  });
-} catch (error) {
-  window.alert(error);
-} finally {
-  setLoading(false);
-}
+  getItems(RequestsCriteria.NAME, id as string)
+    .then((result) => {
+      actor.value = result;
+    })
+    .catch((error) => window.alert(error))
+    .finally(() => setLoading(false));
+});
 </script>
 
 <style scoped>
@@ -92,7 +91,6 @@ section:first-of-type {
 }
 
 section:first-of-type img {
-  /* width: 100%; */
   max-height: 70vh;
   object-fit: contain;
   max-width: 90vw;

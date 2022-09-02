@@ -49,7 +49,6 @@ onUpdated(() => {
   searchItems(debouncedInput.value)
     .then((res) => {
       searchResults.value = res;
-      // console.log(res);
     })
     .catch((e) => {
       window.alert(`${e}. Please try again later.`);
