@@ -8,7 +8,7 @@
 
 ## General info
 
-An app for searching for movies and actors with mock authorisation and a possibility to add to favourites. You can visit the website ... to check how it works.
+An app for searching for movies and actors with mock authorisation and a possibility to add to favourites.
 
 ## Technologies
 

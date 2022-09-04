@@ -6,14 +6,12 @@
       placeholder="Search"
       aria-label="Search"
       v-model="inputValue"
+      @input="debouncedSearch"
     />
     <button class="btn btn-outline-success" type="submit" data-login="true">
       <SearchSvg />
     </button>
-    <AppHeaderDropdown
-      :items="searchResults"
-      v-if="debouncedInput.length > 0"
-    />
+    <AppHeaderDropdown :items="searchResults" v-if="inputValue.length > 0" />
   </form>
 </template>
 
@@ -21,40 +19,42 @@
 import SearchSvg from "../../assets/icons/SearchSvg.vue";
 import AppHeaderDropdown from "./AppHeaderDropdown.vue";
 import { searchItems } from "@/service/api";
-import { ref, computed, onUpdated } from "vue";
+import { ref } from "vue";
 import type { SearchResult } from "@/models/ISearchResults";
 import { useAuthStore } from "@/store/auth";
 
 const store = useAuthStore();
 const { setLoading } = store;
 
-const debouncedInput = ref("");
-const timeout = ref<null | number>(null);
 const searchResults = ref([] as SearchResult[]);
 
-const inputValue = computed({
-  get() {
-    return debouncedInput.value;
-  },
-  set(val: string) {
-    if (timeout.value) clearTimeout(timeout.value);
-    timeout.value = setTimeout(() => {
-      debouncedInput.value = val;
-    }, 500);
-  },
-});
+const debounce = ref<number | undefined>(undefined);
+const inputValue = ref("");
 
-onUpdated(() => {
+const debouncedSearch = async (event: Event) => {
   setLoading(true);
-  searchItems(debouncedInput.value)
-    .then((res) => {
-      searchResults.value = res;
-    })
-    .catch((e) => {
-      window.alert(`${e}. Please try again later.`);
-    })
-    .finally(() => setLoading(false));
-});
+  const target = event.target as HTMLInputElement;
+  inputValue.value = target.value;
+
+  clearTimeout(debounce.value);
+  debounce.value = setTimeout(() => {
+    if (target.value.length > 0) {
+      handleSearch(target.value);
+    }
+  }, 500);
+};
+
+const handleSearch = async (value: string) => {
+  setLoading(true);
+  try {
+    const result = await searchItems(value);
+    searchResults.value = result;
+  } catch (error) {
+    window.alert(`${error}. Please try again later.`);
+  } finally {
+    setLoading(false);
+  }
+};
 </script>
 
 <style scoped>

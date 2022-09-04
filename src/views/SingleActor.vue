@@ -36,7 +36,7 @@
 import SingleItemImage from "../components/SingleItem/SingleItemImage.vue";
 import { useRoute } from "vue-router";
 import { getItems } from "@/service/api";
-import { ref, type Ref, onUpdated } from "vue";
+import { ref, type Ref, onMounted, watch } from "vue";
 import type { IActor } from "@/models/IActor";
 import MovieCard from "@/components/MainPage/MovieCard.vue";
 import { RequestsCriteria } from "@/models/ERequestsCriteria";
@@ -45,7 +45,6 @@ import { useAuthStore } from "@/store/auth";
 import { getModifiedDate } from "@/utils/getModifiedDate";
 
 const route = useRoute();
-const { id } = route.params;
 
 const store = useAuthStore();
 const { isLoading } = storeToRefs(store);
@@ -53,14 +52,32 @@ const { setLoading } = store;
 
 const actor: Ref<IActor | null> = ref(null);
 
-onUpdated(() => {
+const handleDataLoad = async (id: string) => {
   setLoading(true);
-  getItems(RequestsCriteria.NAME, id as string)
-    .then((result) => {
-      actor.value = result;
-    })
-    .catch((error) => window.alert(error))
-    .finally(() => setLoading(false));
+
+  try {
+    const result = await getItems(RequestsCriteria.NAME, id as string);
+    actor.value = result;
+  } catch (error) {
+    window.alert(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+watch(
+  () => route.params.id,
+  async (newId, oldId) => {
+    if (!newId) return;
+
+    if (newId !== oldId) {
+      handleDataLoad(newId as string);
+    }
+  }
+);
+
+onMounted(() => {
+  handleDataLoad(route.params.id as string);
 });
 </script>
 

@@ -1,6 +1,8 @@
 <template>
   <article v-if="!isLoading">
-    <h1>Top 250 {{ hash }}</h1>
+    <h1 class="dark-grey-text">
+      Top 250 {{ hash === "#movies" ? "movies" : "shows" }}
+    </h1>
     <section class="row">
       <MovieCard
         v-for="item in items"
@@ -33,19 +35,21 @@ const store = useAuthStore();
 const { isLoading } = storeToRefs(store);
 const { setLoading } = store;
 
-try {
-  setLoading(true);
-  getItems(
-    hash === "movies"
-      ? RequestsCriteria.TOP_250_MOVIES
-      : RequestsCriteria.TOP_250_SHOWS
-  ).then((result) => {
+const loadItems = async () => {
+  try {
+    setLoading(true);
+    const result = await getItems(
+      hash === "#movies"
+        ? RequestsCriteria.TOP_250_MOVIES
+        : RequestsCriteria.TOP_250_SHOWS
+    );
     items.value = result.items;
-  });
-} catch (error) {
-  setLoading(false);
-  window.alert(error);
-} finally {
-  setLoading(false);
-}
+  } catch (error) {
+    window.alert(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+loadItems();
 </script>

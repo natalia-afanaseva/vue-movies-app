@@ -2,7 +2,7 @@ import { RequestsCriteria } from "@/models/ERequestsCriteria";
 import type { SearchResult } from "@/models/ISearchResults";
 import axios from "axios";
 
-const apiKey = "k_lhxgvv05";
+const SECRET_API_KEY = "";
 
 export const getItems = async (
   criteria: RequestsCriteria,
@@ -10,7 +10,7 @@ export const getItems = async (
 ): Promise<any> => {
   try {
     const result = await axios.get(
-      `https://imdb-api.com/en/API/${criteria}/${apiKey}/${additionalParams}`
+      `https://imdb-api.com/en/API/${criteria}/${SECRET_API_KEY}/${additionalParams}`
     );
     return result.data;
   } catch (error: any) {

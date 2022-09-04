@@ -51,30 +51,30 @@ const heroMovie: Ref<ITop250> = ref({
 
 const randomIndex = generateRandom(250);
 
-try {
-  setLoading(true);
-  getItems(RequestsCriteria.TOP_250_MOVIES).then((result) => {
-    heroMovie.value = result.items[randomIndex];
-    top250Movies.value = result.items.slice(0, 4);
-  });
+const loadItems = async () => {
+  try {
+    setLoading(true);
+    const movies = await getItems(RequestsCriteria.TOP_250_MOVIES);
+    heroMovie.value = movies.items[randomIndex];
+    top250Movies.value = movies.items.slice(0, 4);
 
-  getItems(RequestsCriteria.TOP_250_SHOWS).then((result) => {
-    top250TVShows.value = result.items.slice(0, 4);
-  });
-} catch (error) {
-  window.alert(error);
-} finally {
-  setLoading(false);
-}
+    const shows = await getItems(RequestsCriteria.TOP_250_SHOWS);
+    top250TVShows.value = shows.items.slice(0, 4);
+  } catch (error) {
+    window.alert(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+loadItems();
 </script>
 
 <style>
 article.main section:first-of-type {
-  position: relative;
   height: 70vh;
   background-size: cover;
   position: relative;
-  width: 100vw;
   top: -3.5rem;
   margin-bottom: -3.5rem;
   z-index: -1;

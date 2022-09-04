@@ -30,7 +30,7 @@ ul {
 
 ul li a {
   text-decoration: none;
-  color: var(--dark-grey);
+  color: var(--dark-grey) !important;
 }
 
 ul li a:hover {

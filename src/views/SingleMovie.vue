@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { useRoute, RouterLink } from "vue-router";
 import { getItems } from "@/service/api";
-import { ref, type Ref, onUpdated } from "vue";
+import { ref, type Ref, onMounted, watch } from "vue";
 import type { IMovie } from "@/models/IMovie";
 import MovieCard from "@/components/MainPage/MovieCard.vue";
 import SingleItemImage from "../components/SingleItem/SingleItemImage.vue";
@@ -72,18 +72,35 @@ const { isLoading } = storeToRefs(store);
 const { setLoading } = store;
 
 const route = useRoute();
-const { id } = route.params;
 
 const movie: Ref<IMovie | null> = ref(null);
 
-onUpdated(() => {
+const handleDataLoad = async (id: string) => {
   setLoading(true);
-  getItems(RequestsCriteria.TITLE, id as string)
-    .then((result) => {
-      movie.value = result;
-    })
-    .catch((error) => window.alert(error))
-    .finally(() => setLoading(false));
+
+  try {
+    const result = await getItems(RequestsCriteria.TITLE, id as string);
+    movie.value = result;
+  } catch (error) {
+    window.alert(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+watch(
+  () => route.params.id,
+  async (newId, oldId) => {
+    if (!newId) return;
+
+    if (newId !== oldId) {
+      handleDataLoad(newId as string);
+    }
+  }
+);
+
+onMounted(() => {
+  handleDataLoad(route.params.id as string);
 });
 </script>
 
